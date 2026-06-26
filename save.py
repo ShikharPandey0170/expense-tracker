@@ -11,7 +11,9 @@ def expenses(expenses):
         except:
             pass
         return
+    
     fieldnames = ['category', 'amount', 'date']
+    
     with open('expenses.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
