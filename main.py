@@ -16,20 +16,46 @@ while True:
         ch = int(input("\nEnter your choice:- "))
         if ch == 1:
             category_map = {'1': 'Food', '2': 'Bills', '3': 'Transportation', '4': 'Health', '5': 'Education', '6': 'Miscellaneous'}
-            category_choice = input("Select Category:\n1. Food\n2. Bills\n3. Transportation\n4. Health\n5. Education\n6. Miscellaneous\n:- ")
-            category = category_map.get(category_choice, 'Miscellaneous')
-            
-            amount = float(input("Enter Amount:- Rs. "))
-            date = input("Enter Date (DD/MM/YYYY):- ")
-            
+            while True:
+                category_choice = input("Select Category:\n1. Food\n2. Bills\n3. Transportation\n4. Health\n5. Education\n6. Miscellaneous\n:- ")
+                category = category_map.get(category_choice)
+                if category:
+                    break
+                print("Invalid category choice! Please enter 1-6.")
+
+            while True:
+                try:
+                    amount = float(input("Enter Amount:- Rs. "))
+                    if amount <= 0:
+                        print("Amount must be positive!")
+                        continue
+                    break
+                except ValueError:
+                    print("Invalid amount! Please enter a number.")
+
+            while True:
+                date = input("Enter Date (DD/MM/YYYY):- ")
+                parts = date.split('/')
+                if len(parts) == 3 and len(parts[0]) == 2 and len(parts[1]) == 2 and len(parts[2]) == 4:
+                    break
+                print("Invalid date format! Please use DD/MM/YYYY.")
+
             add.expense(expenses, category, amount, date)
 
         elif ch == 2:
-            month = input("Enter month to view (MM):- ")
+            while True:
+                month = input("Enter month to view (MM):- ")
+                if month.isdigit() and 1 <= int(month) <= 12:
+                    break
+                print("Invalid month! Please enter a number between 01 and 12.")
             view.expenses(expenses, month)
-        
+
         elif ch == 3:
-            month = input("Enter month to calculate total (MM):- ")
+            while True:
+                month = input("Enter month to calculate total (MM):- ")
+                if month.isdigit() and 1 <= int(month) <= 12:
+                    break
+                print("Invalid month! Please enter a number between 01 and 12.")
             tot, matching = total.expense(expenses, month)
             
             if tot > 0:
@@ -44,13 +70,26 @@ while True:
                 print("No expenses found for this month.")
         
         elif ch == 4:
-            budget = float(input("Enter new monthly budget:- Rs. "))
+            while True:
+                try:
+                    budget = float(input("Enter new monthly budget:- Rs. "))
+                    if budget < 0:
+                        print("Budget cannot be negative!")
+                        continue
+                    break
+                except ValueError:
+                    print("Invalid budget! Please enter a number.")
             save.budget(budget)
             print("Budget Updated!")
-        
+
         elif ch == 5:
-            target = input("Enter date to delete (DD/MM/YYYY):- ")
-            count = delete.expenses(expenses, target)
+            while True:
+                target = input("Enter date to delete (DD/MM/YYYY):- ")
+                parts = target.split('/')
+                if len(parts) == 3 and len(parts[0]) == 2 and len(parts[1]) == 2 and len(parts[2]) == 4:
+                    break
+                print("Invalid date format! Please use DD/MM/YYYY.")
+            count = delete.expense(expenses, target)
             
             print(f"Deleted {count} expense(s) for date {target}")
             if count > 0:
