@@ -1,4 +1,4 @@
-def expenses(expenses, date):
+def expense(expenses, date):
     length = len(expenses)
     new_expenses = []
     for e in expenses:
